@@ -1,0 +1,5 @@
+{
+  "name": "LocalGenAI Analyst",
+  "description": "A fully local AI desktop application interface for analyzing and querying video files using simulated local agents (OpenVINO/Python backend).",
+  "requestFramePermissions": []
+}
