@@ -1,10 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Message, Sender, MessageType, VideoMetadata, AgentState, ChatSession } from './types';
+import { Message, Sender, MessageType, VideoMetadata, AgentState } from './types';
 import { VideoUploader } from './components/VideoUploader';
 import { ChatMessage } from './components/ChatMessage';
 import { AgentStatusPanel } from './components/AgentStatusPanel';
+import { CodeInspector } from './components/CodeInspector';
 import { mockBackend } from './services/mockBackend';
-import { MessageSquare, Plus, Send, Settings, Menu, Box, History as HistoryIcon } from 'lucide-react';
+import { MessageSquare, Plus, Send, Settings, Menu, Box, Code2 } from 'lucide-react';
 
 const App: React.FC = () => {
   const [currentVideo, setCurrentVideo] = useState<VideoMetadata | null>(null);
@@ -17,6 +18,7 @@ const App: React.FC = () => {
     { name: 'Generation Agent', status: 'idle', progress: 0 },
   ]);
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [isCodeInspectorOpen, setIsCodeInspectorOpen] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
 
   // Load initial greeting
@@ -69,6 +71,8 @@ const App: React.FC = () => {
   return (
     <div className="flex h-screen bg-slate-950 text-slate-200 font-sans">
       
+      <CodeInspector isOpen={isCodeInspectorOpen} onClose={() => setIsCodeInspectorOpen(false)} />
+
       {/* Sidebar */}
       <div className={`${isSidebarOpen ? 'w-64' : 'w-0'} bg-slate-900/50 border-r border-slate-800 transition-all duration-300 flex flex-col overflow-hidden`}>
         <div className="p-4 border-b border-slate-800 flex items-center gap-2">
@@ -107,8 +111,15 @@ const App: React.FC = () => {
           </div>
         </div>
 
-        <div className="p-4 border-t border-slate-800">
-          <div className="flex items-center gap-2 text-xs text-slate-500">
+        <div className="p-4 border-t border-slate-800 space-y-2">
+           <button 
+            onClick={() => setIsCodeInspectorOpen(true)}
+            className="w-full flex items-center gap-2 px-3 py-2 rounded-md bg-slate-800/50 hover:bg-slate-800 text-slate-300 text-xs transition-colors border border-slate-700/50"
+          >
+            <Code2 size={14} className="text-primary-400"/>
+            View Backend Source
+          </button>
+          <div className="flex items-center gap-2 text-xs text-slate-500 px-1">
             <Settings size={12} />
             <span>Version 0.1.0 (Offline Mode)</span>
           </div>
